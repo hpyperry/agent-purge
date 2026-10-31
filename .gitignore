@@ -4,7 +4,7 @@ state.json
 notes/
 
 # 私人 persona（仓库只带 lib/templates 里的中性模板）
-personas/
+/personas/
 
 # magpie 插件的人设清单按本机人设生成，不进仓库
 magpie-plugin/page/personas.js
