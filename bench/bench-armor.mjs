@@ -34,7 +34,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { installCrashHandlers, recover as recoverSwaps, swapFile as journalSwap } from "./lib/restore.mjs";
+import { installCrashHandlers, recover as recoverSwaps, swapFile as journalSwap } from "../lib/restore.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HOME = os.homedir();
