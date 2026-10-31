@@ -6,11 +6,8 @@
 <meta name="color-scheme" content="light" />
 <title>agent-purge · 提示词控制台</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f63ee'/%3E%3Cpath d='M8 24 16 8l8 16' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M11.5 19h9' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" />
 <style>
-/* ── Design system: Software（浅色 / 电光蓝 / Grotesk + Instrument） ── */
+/* ── Design system: Software（浅色 / 电光蓝 / 系统字体，完全离线） ── */
 :root{
   /* 权威令牌 */
   --ground:#fcfcfd;
@@ -38,8 +35,8 @@
   --danger-soft:rgba(180,35,24,.06);
   --shadow:0 1px 2px rgba(22,25,31,.04),0 12px 24px -18px rgba(22,25,31,.35);
 
-  --font-display:"Host Grotesk","Instrument Sans","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
-  --font-ui:"Instrument Sans","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Microsoft YaHei",sans-serif;
+  --font-display:"SF Pro Display","Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --font-ui:"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
   --font-mono:"Cascadia Code","JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
   --t:var(--motion) var(--ease);
 }
@@ -1040,7 +1037,9 @@ $("#dPersona").addEventListener("change", async (e) => {
 });
 
 $("#saveModeBtn").addEventListener("click", async () => {
-  if (draftMode === S.defaults.mode) return;
+  // defaultsSet=false 时 draftMode 一定等于建议值，但那是「还没保存」而不是「没改动」——
+  // 这里必须放行，否则新装用户点保存永远静默返回（点了没反应）。
+  if (draftMode === S.defaults.mode && S.defaultsSet !== false) return;
   try {
     await api("/api/defaults", { method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ harness: S.defaults.harness, mode: draftMode }) });

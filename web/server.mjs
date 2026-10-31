@@ -232,6 +232,9 @@ function savePersona(payload) {
 			else delete meta.model;
 		}
 		const saved = store.save(id, { meta: { ...meta, id }, body: payload.body });
+		// 改的正好是当前 persona：active.md 是派生物，已装的常驻通道注入的是它。
+		// 不刷新就会"保存成功但桌面端还是旧正文"（点了保存没反应的另一半）。
+		if (store.activeId() === saved.id) store.refreshActive();
 		return { ok: true, persona: { id: saved.id, meta: saved.meta, body: saved.body } };
 	} catch (e) {
 		return { error: e.message };
